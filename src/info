@@ -1,0 +1,25 @@
+In the `useEffect` hook, when you return a function, it's referred to as a cleanup function. This function is executed when the component unmounts or when the dependencies specified in the second argument of `useEffect` change.
+
+In the provided code snippet:
+
+```javascript
+useEffect(() => {
+  let intervalId;
+
+  if (isRunning) {
+    intervalId = setInterval(() => {
+      setTime(prevTime => prevTime + 1);
+    }, 1000);
+  }
+
+  return () => {
+    clearInterval(intervalId);
+  };
+}, [isRunning]);
+```
+
+- When the component mounts, the effect sets up an interval to update the time every second if `isRunning` is `true`.
+- When the component unmounts or `isRunning` changes (if it's specified as a dependency), the cleanup function returned by `useEffect` is called.
+- The cleanup function in this case clears the interval set up earlier using `clearInterval(intervalId)`. This ensures that the interval is properly cleared to avoid memory leaks or unnecessary processing after the component is no longer in use.
+
+So, `return () => { clearInterval(intervalId); };` ensures that any resources or side effects created by the effect are cleaned up properly when the component is unmounted or when the `isRunning` state changes.
